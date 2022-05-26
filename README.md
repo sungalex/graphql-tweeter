@@ -152,3 +152,20 @@ Because of this rule, whenever Apollo Server resolves a field that returns an ob
     },
   },
 ```
+
+## Documentation
+
+You can easily create API documents for types and fields by using three double quotation marks. The document content should be written directly above the API definition.
+
+```js
+const typeDefs = gql`
+  """
+  Tweet object represents a resource for a Tweet
+  """
+  type Tweet {
+    id: ID!
+    text: String!
+    author: User
+  }
+`;
+```
