@@ -78,7 +78,7 @@ server.listen().then(({ url }) => {
 });
 ```
 
-## Mutation type for Modifing a Resource(for POST, DELETE, PUT Request)
+## Mutation type for Modifying a Resource(for POST, DELETE, PUT Request)
 
 ```js
   type Mutation {
