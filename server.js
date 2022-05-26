@@ -1,29 +1,27 @@
 import { ApolloServer, gql } from "apollo-server";
 
-/**
- * GQL: GraphQL Query Language(including SDL)
- *
- * SDL: Schema Definition Language (Explaining GQL)
- *
- * Query root type must be provided(Compare REST API)
- *  - GET /allTweets
- *  - GET /tweet
- *
- * Mutation type for Modifing a Resource(POST, DELETE, PUT Request)
- *  - POST /postTweet
- *  - DELETE /deleteTweet
- */
+const tweets = [
+  {
+    id: "1",
+    text: "First Tweet",
+  },
+  {
+    id: "2",
+    text: "Second Tweet",
+  },
+];
+
 const typeDefs = gql`
   type User {
     id: ID!
-    username: String!
     firstName: String!
-    lastName: String
+    lastName: String!
+    fullName: String
   }
   type Tweet {
     id: ID!
     text: String!
-    author: User!
+    author: User
   }
   type Query {
     allTweets: [Tweet!]!
@@ -35,7 +33,28 @@ const typeDefs = gql`
   }
 `;
 
-const server = new ApolloServer({ typeDefs });
+const resolvers = {
+  Query: {
+    allTweets() {
+      return tweets;
+    },
+    tweet(root, { id }) {
+      return tweets.find((tweet) => tweet.id === id);
+    },
+  },
+  Mutation: {
+    postTweet(_, { text, userId }) {
+      const newTweet = {
+        id: `${tweets.length + 1}`,
+        text: text,
+      };
+      tweets.push(newTweet);
+      return newTweet;
+    },
+  },
+};
+
+const server = new ApolloServer({ typeDefs, resolvers });
 
 server.listen().then(({ url }) => {
   console.log(`Running on ${url}`);
