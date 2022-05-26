@@ -1,7 +1,7 @@
 import { ApolloServer, gql } from "apollo-server";
 import fetch from "node-fetch";
 
-const tweets = [
+let tweets = [
   {
     id: "1",
     text: "First Tweet",
@@ -80,6 +80,12 @@ const resolvers = {
       };
       tweets.push(newTweet);
       return newTweet;
+    },
+    deleteTweet(_, { id }) {
+      const tweet = tweets.find((tweet) => tweet.id === id);
+      if (!tweet) return false;
+      tweets = tweets.filter((tweet) => tweet.id !== id);
+      return true;
     },
   },
   User: {
